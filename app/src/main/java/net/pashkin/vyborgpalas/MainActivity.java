@@ -12,6 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     static final String TAG = "myLogs";
@@ -55,6 +60,22 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             return PageFragment.newInstance(position);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            try {
+                DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
+                String inputDateStr=getJobject().getJSONObject("seanses").names().getString(position);
+                Date date = inputFormat.parse(inputDateStr);
+                return  outputFormat.format(date);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return "Title " + position;
         }
 
         @Override
