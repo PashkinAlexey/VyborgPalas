@@ -1,7 +1,6 @@
 package net.pashkin.vyborgpalas;
 
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -65,10 +64,11 @@ public class PageFragment extends Fragment {
 
         view = inflater.inflate(R.layout.pagefragment, null);
         lvMain = (ExpandableListView) view.findViewById(R.id.lvMain);
-        String url = "http://kinopasta.ru/export/widget.php?c=913&k=ed4d7ad8af&callback=jsonp1472499720148&_=1472499720151";
-
-        MyTask tasky=new MyTask();
-        tasky.execute(url);
+        try {
+            listCreator(MainActivity.getJobject());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return view;
     }
 
@@ -131,31 +131,5 @@ public class PageFragment extends Fragment {
                 childFrom, childTo);
 
         lvMain.setAdapter(adapter);
-    }
-
-    class MyTask extends AsyncTask<String, Void, JSONObject> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected JSONObject doInBackground(String... url) {
-            JSONParser parsy = new JSONParser();
-            JSONObject result=parsy.getJSONFromUrl(url[0]);
-            return result;
-        }
-        @Override
-        protected void onPostExecute(final JSONObject jobj) {
-            try {
-                //Log.d("MyLog","МАССИВ:"+jArray.toString());
-                listCreator(jobj);
-                //ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, strList);
-                //lvMain.setAdapter(adapter);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }
