@@ -64,6 +64,7 @@ public class PageFragment extends Fragment {
 
         view = inflater.inflate(R.layout.pagefragment, null);
         lvMain = (ExpandableListView) view.findViewById(R.id.lvMain);
+
         try {
             listCreator(MainActivity.getJobject());
         } catch (JSONException e) {
@@ -87,18 +88,18 @@ public class PageFragment extends Fragment {
                 String movieId=jObjTemp.getString("f");
                 String movieName=jobj.getJSONObject("films").getJSONObject(movieId).getString("fr");
                 int movieIndex=-1;
-                for (int j=0; j<movieData.size(); j++) {
+                for (int j=0; j<movieData.size(); j++) {                            //Проход по именам фильмов, и вычисление индекса если имя совпадает
                     if (movieData.get(j).get("movieName").equals(movieName)) {
                         movieIndex = j;
                         break;
                     }
                 }
-                if (movieIndex>=0){
+                if (movieIndex>=0){                                                 //Если фильм уже записан то добавить новое время к нему по найденному индексу
                     t = new HashMap<String, String>();
                     t.put("time", jObjTemp.getString("t")); // время
                     timeData.get(movieIndex).add(t);
                 }
-                else {
+                else {                                                              //Если фильм не записан то добавить фильм и добавить новое время к нему
                     m = new HashMap<String, String>();
                     m.put("movieName", movieName); //название фильма
                     movieData.add(m);
@@ -114,21 +115,21 @@ public class PageFragment extends Fragment {
         }
 
         // список атрибутов групп для чтения
-        String groupFrom[] = new String[] {"movieName"};
+        String movieFrom[] = new String[] {"movieName"};
         // список ID view-элементов, в которые будет помещены атрибуты групп
-        int groupTo[] = new int[] {android.R.id.text1};
+        int movieTo[] = new int[] {android.R.id.text1};
 
         // список атрибутов элементов для чтения
-        String childFrom[] = new String[] {"time"};
+        String timeFrom[] = new String[] {"time"};
         // список ID view-элементов, в которые будет помещены атрибуты элементов
-        int childTo[] = new int[] {android.R.id.text1};
+        int timeTo[] = new int[] {R.id.text1};
 
         SimpleExpandableListAdapter adapter = new SimpleExpandableListAdapter(
                 getContext(),
-                movieData, android.R.layout.simple_expandable_list_item_1,
-                groupFrom, groupTo,
-                timeData, android.R.layout.simple_list_item_1,
-                childFrom, childTo);
+                movieData, R.layout.my_expandable_list_item,
+                movieFrom, movieTo,
+                timeData, R.layout.my_list_item,
+                timeFrom, timeTo);
 
         lvMain.setAdapter(adapter);
     }
