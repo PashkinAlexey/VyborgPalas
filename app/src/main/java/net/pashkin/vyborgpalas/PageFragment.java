@@ -34,7 +34,6 @@ public class PageFragment extends Fragment {
 
     // коллекция для элементов одной группы
     ArrayList<Map<String, String>> timeDataItem;
-
     // общая коллекция для коллекций элементов
     ArrayList<ArrayList<Map<String, String>>> timeData;
     // в итоге получится childData = ArrayList<childDataItem>
@@ -117,7 +116,7 @@ public class PageFragment extends Fragment {
         // список атрибутов групп для чтения
         String movieFrom[] = new String[] {"movieName"};
         // список ID view-элементов, в которые будет помещены атрибуты групп
-        int movieTo[] = new int[] {android.R.id.text1};
+        int movieTo[] = new int[] {R.id.text1};
 
         // список атрибутов элементов для чтения
         String timeFrom[] = new String[] {"time"};
