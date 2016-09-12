@@ -16,6 +16,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * Created by Алексей on 12.09.2016.
+ */
+
 public class JSONParser {
 
     private JSONObject jobj = null;
@@ -54,15 +58,7 @@ public class JSONParser {
         } catch (JSONException e) {
             Log.e("Ошибка", "Ошибка парсинга " + e.toString());
         }
-        //передаем Json-массив
-        /*try {
-            Log.d("MyLog",jobj.getJSONObject("seanses").getJSONArray("2016-09-07").toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
         return jobj;
-        //String str=builder.toString();
-        //return str.substring(28,str.length()-4819);
 
     }
 }
