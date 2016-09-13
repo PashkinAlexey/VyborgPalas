@@ -30,17 +30,7 @@ public class  PageFragment extends Fragment {
     static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
 
     int pageNumber;
-    int backColor;
     ExpandableListView lvMain;
-
-    // коллекция для групп
-    ArrayList<Map<String, String>> movieData;
-
-    // коллекция для элементов одной группы
-    ArrayList<Map<String, Object>> timeDataItem;
-    // общая коллекция для коллекций элементов
-    ArrayList<ArrayList<Map<String, Object>>> timeData;
-    // в итоге получится childData = ArrayList<childDataItem>
 
     // список атрибутов группы или элемента
     Map<String, Object> img,t;
@@ -82,12 +72,14 @@ public class  PageFragment extends Fragment {
         Drawable noGlass = ResourcesCompat.getDrawable(getResources(), R.drawable.noglass, null);
         JSONArray dates=jobj.getJSONObject("seanses").names();
         JSONArray jArray= jobj.getJSONObject("seanses").getJSONArray(dates.getString(pageNumber));
+        // создаем список ID фильмов, который будет соответствовать их позиции в списке
+        final ArrayList<String> idList = new ArrayList<String>();
         // создаем коллекцию групп элементов
-        movieData = new ArrayList<Map<String, String>>();
+        final ArrayList<Map<String, String>> movieData = new ArrayList<Map<String, String>>();
         // создаем коллекцию для коллекций элементов
-        timeData = new ArrayList<ArrayList<Map<String, Object>>>();
+        ArrayList<ArrayList<Map<String, Object>>> timeData = new ArrayList<ArrayList<Map<String, Object>>>();
         // создаем коллекцию элементов для первой группы
-        timeDataItem = new ArrayList<Map<String, Object>>();
+        ArrayList<Map<String, Object>> timeDataItem = new ArrayList<Map<String, Object>>();
         if (jArray != null) {
             for (int i=0;i<jArray.length();i++){
                 JSONObject jObjTemp=(JSONObject)jArray.get(i);
@@ -111,8 +103,8 @@ public class  PageFragment extends Fragment {
                     m = new HashMap<String, String>();
                     m.put("movieName", movieName); //название фильма
                     movieData.add(m);
+                    idList.add(movieId);
 
-                    timeDataItem = new ArrayList<Map<String, Object>>();
                     t = new HashMap<String, Object>();
                     t.put("time", jObjTemp.getString("t")); // время
                     Drawable image=(jObjTemp.getInt("is3d")==0)?noGlass:glass;
@@ -162,13 +154,14 @@ public class  PageFragment extends Fragment {
 
         /*  if group item clicked */
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    Log.d("myLogs", Long.toString(packedPosition));
+
+                    Log.d("myLogs", idList.get(groupPosition));
                     //onGroupLongClick(groupPosition);
                 }
 
         /*  if child item clicked */
                 else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    Log.d("myLogs", Long.toString(packedPosition));
+                    Log.d("myLogs", Long.toString(childPosition));
                     //onChildLongClick(groupPosition, childPosition);
                 }
 
