@@ -55,6 +55,7 @@ public class JSONParser {
         try {
             String str=builder.toString();
             jobj = new JSONObject(str.substring(19,str.length()-1));
+
         } catch (JSONException e) {
             Log.e("Ошибка", "Ошибка парсинга " + e.toString());
         }

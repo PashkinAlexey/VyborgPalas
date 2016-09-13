@@ -1,6 +1,7 @@
 package net.pashkin.vyborgpalas;
 
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -73,13 +74,13 @@ public class  PageFragment extends Fragment {
         JSONArray dates=jobj.getJSONObject("seanses").names();
         JSONArray jArray= jobj.getJSONObject("seanses").getJSONArray(dates.getString(pageNumber));
         // создаем список ID фильмов, который будет соответствовать их позиции в списке
-        final ArrayList<String> idList = new ArrayList<String>();
+        ArrayList<String> idList = new ArrayList<String>();
         // создаем коллекцию групп элементов
-        final ArrayList<Map<String, String>> movieData = new ArrayList<Map<String, String>>();
+        ArrayList<Map<String, String>> movieData = new ArrayList<Map<String, String>>();
         // создаем коллекцию для коллекций элементов
         ArrayList<ArrayList<Map<String, Object>>> timeData = new ArrayList<ArrayList<Map<String, Object>>>();
         // создаем коллекцию элементов для первой группы
-        ArrayList<Map<String, Object>> timeDataItem = new ArrayList<Map<String, Object>>();
+        ArrayList<Map<String, Object>> timeDataItem;
         if (jArray != null) {
             for (int i=0;i<jArray.length();i++){
                 JSONObject jObjTemp=(JSONObject)jArray.get(i);
@@ -109,7 +110,7 @@ public class  PageFragment extends Fragment {
                     t.put("time", jObjTemp.getString("t")); // время
                     Drawable image=(jObjTemp.getInt("is3d")==0)?noGlass:glass;
                     t.put("img", image);
-
+                    timeDataItem = new ArrayList<Map<String, Object>>();
                     timeDataItem.add(t);
                     // добавляем в коллекцию коллекций
                     timeData.add(timeDataItem);
@@ -154,15 +155,15 @@ public class  PageFragment extends Fragment {
 
         /*  if group item clicked */
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-
-                    Log.d("myLogs", idList.get(groupPosition));
+                    //Log.d("myLogs", idList.get(groupPosition));
+                    Intent intent= new Intent(getContext(), FilmActivity.class);
+                    startActivity(intent);
                     //onGroupLongClick(groupPosition);
                 }
 
         /*  if child item clicked */
                 else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     Log.d("myLogs", Long.toString(childPosition));
-                    //onChildLongClick(groupPosition, childPosition);
                 }
 
                 return true;
