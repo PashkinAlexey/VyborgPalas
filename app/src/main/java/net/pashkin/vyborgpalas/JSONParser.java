@@ -60,6 +60,5 @@ public class JSONParser {
             Log.e("Ошибка", "Ошибка парсинга " + e.toString());
         }
         return jobj;
-
     }
 }

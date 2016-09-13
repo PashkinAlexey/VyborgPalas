@@ -3,6 +3,7 @@ package net.pashkin.vyborgpalas;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
@@ -74,7 +75,7 @@ public class  PageFragment extends Fragment {
         JSONArray dates=jobj.getJSONObject("seanses").names();
         JSONArray jArray= jobj.getJSONObject("seanses").getJSONArray(dates.getString(pageNumber));
         // создаем список ID фильмов, который будет соответствовать их позиции в списке
-        ArrayList<String> idList = new ArrayList<String>();
+        final ArrayList<String> idList = new ArrayList<String>();
         // создаем коллекцию групп элементов
         ArrayList<Map<String, String>> movieData = new ArrayList<Map<String, String>>();
         // создаем коллекцию для коллекций элементов
@@ -155,10 +156,9 @@ public class  PageFragment extends Fragment {
 
         /*  if group item clicked */
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    //Log.d("myLogs", idList.get(groupPosition));
-                    Intent intent= new Intent(getContext(), FilmActivity.class);
-                    startActivity(intent);
-                    //onGroupLongClick(groupPosition);
+                    String url="http://kinopasta.ru/handlers/widget_film.php?c=913&k=ed4d7ad8af&film_id="+idList.get(groupPosition)+"&callback=jsonp1473800728548&_=1473806277914";
+                    MyTask tasky=new MyTask();
+                    tasky.execute(url);
                 }
 
         /*  if child item clicked */
@@ -169,5 +169,31 @@ public class  PageFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    class MyTask extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... url) {
+            JSONParser parsy = new JSONParser();
+            return parsy.getJSONFromUrl(url[0]);
+        }
+        @Override
+        protected void onPostExecute(final JSONObject result) {
+            Intent intent= new Intent(getContext(), FilmActivity.class);
+            String htmlData = null;
+            try {
+                htmlData = result.getString("html");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            intent.putExtra("htmlData", htmlData);
+            startActivity(intent);
+        }
     }
 }
