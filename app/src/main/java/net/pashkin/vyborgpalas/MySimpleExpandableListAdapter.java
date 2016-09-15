@@ -18,19 +18,27 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
     private String[] mChildFrom;
     private int[] mChildTo;
 
+    private List<? extends Map<String, ?>> mGroupData;
+    private String[] mGroupFrom;
+    private int[] mGroupTo;
+
     public MySimpleExpandableListAdapter(Context context,
                                          List<? extends Map<String, ?>> groupData, int groupLayout,
                                          String[] groupFrom, int[] groupTo,
                                          List<? extends List<? extends Map<String, ?>>> childData, int childLayout,
                                          String[] childFrom, int[] childTo,
-                                         String[] imgFrom, int[]imgTo) {
+                                         String[] imgFrom, int[]imgTo,
+                                         String[] movieImgFrom, int[]movieImgTo) {
         super(context, groupData, groupLayout, groupFrom, groupTo, childData, childLayout, childFrom, childTo);
         mChildData = childData;
         mChildFrom = imgFrom;
         mChildTo = imgTo;
-    }
 
-    private void bindView(View view, Map<String, ?> data, String[] from, int[] to) {
+        mGroupData = groupData;
+        mGroupFrom = movieImgFrom;
+        mGroupTo = movieImgTo;
+    }
+    private void childBindView(View view, Map<String, ?> data, String[] from, int[] to) {
         int len = to.length;
         for (int i = 0; i < len; i++) {
             ImageView v = (ImageView)view.findViewById(to[i]);
@@ -39,11 +47,25 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
             }
         }
     }
-
+    private void groupBindView(View view, Map<String, ?> data, String[] from, int[] to) {
+        int len = to.length;
+        for (int i = 0; i < len; i++) {
+            ImageView v = (ImageView)view.findViewById(to[i]);
+            if (v != null) {
+                v.setImageDrawable((Drawable)data.get(from[i]));
+            }
+        }
+    }
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View v= super.getChildView(groupPosition, childPosition, isLastChild, convertView, parent);
-        bindView(v, mChildData.get(groupPosition).get(childPosition), mChildFrom, mChildTo);
+        childBindView(v, mChildData.get(groupPosition).get(childPosition), mChildFrom, mChildTo);
         return  v;
+    }
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        View v= super.getGroupView(groupPosition, isExpanded, convertView, parent);
+        groupBindView(v, mGroupData.get(groupPosition), mGroupFrom, mGroupTo);
+        return v;
     }
 }

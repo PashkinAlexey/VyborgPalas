@@ -124,9 +124,9 @@ public class  PageFragment extends Fragment {
         }
 
         // список атрибутов групп для чтения
-        String movieFrom[] = new String[] {"movieName","movieImage"};
+        String movieFrom[] = new String[] {"movieName"};
         // список ID view-элементов, в которые будет помещены атрибуты групп
-        int movieTo[] = new int[] {R.id.text1, R.id.movieImage};
+        int movieTo[] = new int[] {R.id.text1};
 
         // список атрибутов элементов для чтения
         String timeFrom[] = new String[] {"time"};
@@ -137,13 +137,18 @@ public class  PageFragment extends Fragment {
         // список ID view-элементов, в которые будет помещены атрибуты элементов
         int imgTo[] = new int[] {R.id.imageView1};
 
+        String movieImgFrom[] = new String[] {"movieImage"};
+        // список ID view-элементов, в которые будет помещены атрибуты элементов
+        int movieImgTo[] = new int[] {R.id.movieImage};
+
         MySimpleExpandableListAdapter adapter = new MySimpleExpandableListAdapter(
                 getContext(),
                 movieData, R.layout.my_expandable_list_item,
                 movieFrom, movieTo,
                 timeData, R.layout.my_list_item,
                 timeFrom, timeTo,
-                imgFrom, imgTo
+                imgFrom, imgTo,
+                movieImgFrom, movieImgTo
                  );
 
         lvMain.setAdapter(adapter);
