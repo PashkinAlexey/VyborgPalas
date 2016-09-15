@@ -18,9 +18,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -35,8 +39,7 @@ public class  PageFragment extends Fragment {
     ExpandableListView lvMain;
 
     // список атрибутов группы или элемента
-    Map<String, Object> img,t;
-    Map<String, String> m;
+    Map<String, Object> img,t,m;
 
     View view;
 
@@ -62,7 +65,7 @@ public class  PageFragment extends Fragment {
         lvMain = (ExpandableListView) view.findViewById(R.id.lvMain);
 
         try {
-            listCreator(MainActivity.getJobject());
+            listCreator(MainActivity.getjObj());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -77,7 +80,7 @@ public class  PageFragment extends Fragment {
         // создаем список ID фильмов, который будет соответствовать их позиции в списке
         final ArrayList<String> idList = new ArrayList<String>();
         // создаем коллекцию групп элементов
-        ArrayList<Map<String, String>> movieData = new ArrayList<Map<String, String>>();
+        ArrayList<Map<String, Object>> movieData = new ArrayList<Map<String, Object>>();
         // создаем коллекцию для коллекций элементов
         ArrayList<ArrayList<Map<String, Object>>> timeData = new ArrayList<ArrayList<Map<String, Object>>>();
         // создаем коллекцию элементов для первой группы
@@ -102,8 +105,9 @@ public class  PageFragment extends Fragment {
                     timeData.get(movieIndex).add(t);
                 }
                 else {                                                              //Если фильм не записан то добавить фильм и добавить новое время к нему
-                    m = new HashMap<String, String>();
+                    m = new HashMap<String, Object>();
                     m.put("movieName", movieName); //название фильма
+                    m.put("movieImage", MainActivity.getMovieImgs().get(movieId)); //изображение фильма
                     movieData.add(m);
                     idList.add(movieId);
 
@@ -120,9 +124,9 @@ public class  PageFragment extends Fragment {
         }
 
         // список атрибутов групп для чтения
-        String movieFrom[] = new String[] {"movieName"};
+        String movieFrom[] = new String[] {"movieName","movieImage"};
         // список ID view-элементов, в которые будет помещены атрибуты групп
-        int movieTo[] = new int[] {R.id.text1};
+        int movieTo[] = new int[] {R.id.text1, R.id.movieImage};
 
         // список атрибутов элементов для чтения
         String timeFrom[] = new String[] {"time"};
