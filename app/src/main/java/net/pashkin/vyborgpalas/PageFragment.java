@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +44,7 @@ public class  PageFragment extends Fragment {
 
     View view;
 
-    static PageFragment newInstance(int page) {
+    PageFragment newInstance(int page) {
         PageFragment pageFragment = new PageFragment();
         Bundle arguments = new Bundle();
         arguments.putInt(ARGUMENT_PAGE_NUMBER, page);
@@ -67,7 +68,8 @@ public class  PageFragment extends Fragment {
         try {
             listCreator(MainActivity.getjObj());
         } catch (JSONException e) {
-            e.printStackTrace();
+            Toast toast = Toast.makeText(getContext(),"Ошибка загрузки данных", Toast.LENGTH_SHORT);
+            toast.show();
         }
         return view;
     }
@@ -76,18 +78,23 @@ public class  PageFragment extends Fragment {
         Drawable glass = ResourcesCompat.getDrawable(getResources(), R.drawable.glass, null);
         Drawable noGlass = ResourcesCompat.getDrawable(getResources(), R.drawable.noglass, null);
         JSONArray dates=jobj.getJSONObject("seanses").names();
-        JSONArray jArray= jobj.getJSONObject("seanses").getJSONArray(dates.getString(pageNumber));
+        JSONArray seansesArray= jobj.getJSONObject("seanses").getJSONArray(dates.getString(pageNumber));
+
         // создаем список ID фильмов, который будет соответствовать их позиции в списке
         final ArrayList<String> idList = new ArrayList<String>();
+
         // создаем коллекцию групп элементов
         ArrayList<Map<String, Object>> movieData = new ArrayList<Map<String, Object>>();
+
         // создаем коллекцию для коллекций элементов
         ArrayList<ArrayList<Map<String, Object>>> timeData = new ArrayList<ArrayList<Map<String, Object>>>();
+
         // создаем коллекцию элементов для первой группы
         ArrayList<Map<String, Object>> timeDataItem;
-        if (jArray != null) {
-            for (int i=0;i<jArray.length();i++){
-                JSONObject jObjTemp=(JSONObject)jArray.get(i);
+
+        if (seansesArray != null) {
+            for (int i=0;i<seansesArray.length();i++){
+                JSONObject jObjTemp=(JSONObject)seansesArray.get(i);
                 String movieId=jObjTemp.getString("f");
                 String movieName=jobj.getJSONObject("films").getJSONObject(movieId).getString("fr");
                 int movieIndex=-1;
@@ -107,14 +114,14 @@ public class  PageFragment extends Fragment {
                 else {                                                              //Если фильм не записан то добавить фильм и добавить новое время к нему
                     m = new HashMap<String, Object>();
                     m.put("movieName", movieName); //название фильма
-                    m.put("movieImage", MainActivity.getMovieImgs().get(movieId)); //изображение фильма
+                    m.put("movieImage", mainActivity.getMovieImgs().get(movieId)); //изображение фильма
                     movieData.add(m);
-                    idList.add(movieId);
+                    idList.add(movieId); //добавляем ID фильма в отдельный список, для получения нужного HTML
 
                     t = new HashMap<String, Object>();
                     t.put("time", jObjTemp.getString("t")); // время
-                    Drawable image=(jObjTemp.getInt("is3d")==0)?noGlass:glass;
-                    t.put("img", image);
+                    Drawable image=(jObjTemp.getInt("is3d")==0)?noGlass:glass; // //изображение сеанса
+                    t.put("img", image); //изображение сеанса
                     timeDataItem = new ArrayList<Map<String, Object>>();
                     timeDataItem.add(t);
                     // добавляем в коллекцию коллекций
@@ -159,28 +166,28 @@ public class  PageFragment extends Fragment {
                 long packedPosition = lvMain.getExpandableListPosition(position);
 
                 int itemType = ExpandableListView.getPackedPositionType(packedPosition);
-                int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
-                int childPosition = ExpandableListView.getPackedPositionChild(packedPosition);
+                int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition); //позиция нажатого пункта списка
+                //int childPosition = ExpandableListView.getPackedPositionChild(packedPosition); //позиция нажатого пункта подсписка
 
 
-        /*  if group item clicked */
+        //  Нажатие на пункт списка
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    String url="http://kinopasta.ru/handlers/widget_film.php?c=913&k=ed4d7ad8af&film_id="+idList.get(groupPosition)+"&callback=jsonp1473800728548&_=1473806277914";
-                    MyTask tasky=new MyTask();
-                    tasky.execute(url);
+                    String url="http://kinopasta.ru/handlers/widget_film.php?c=913&k=ed4d7ad8af&film_id="+idList.get(groupPosition)+"&_=1473806277914";
+                    HtmlDl htmlDl=new HtmlDl();
+                    htmlDl.execute(url);
                 }
 
-        /*  if child item clicked */
+        /*  //Нажатие на пункт подсписка
                 else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     Log.d("myLogs", Long.toString(childPosition));
-                }
+                }*/
 
                 return true;
             }
         });
     }
 
-    class MyTask extends AsyncTask<String, Void, JSONObject> {
+    class HtmlDl extends AsyncTask<String, Void, JSONObject> {
 
         @Override
         protected void onPreExecute() {
@@ -189,8 +196,14 @@ public class  PageFragment extends Fragment {
 
         @Override
         protected JSONObject doInBackground(String... url) {
-            JSONParser parsy = new JSONParser();
-            return parsy.getJSONFromUrl(url[0]);
+            try {
+                return JSONParser.getJSONFromUrl(url[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return new JSONObject();
         }
         @Override
         protected void onPostExecute(final JSONObject result) {
@@ -198,11 +211,12 @@ public class  PageFragment extends Fragment {
             String htmlData = null;
             try {
                 htmlData = result.getString("html");
+                intent.putExtra("htmlData", htmlData);
+                startActivity(intent);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Toast toast = Toast.makeText(getContext(),"Невозможно получить данные о фильме", Toast.LENGTH_SHORT);
+                toast.show();
             }
-            intent.putExtra("htmlData", htmlData);
-            startActivity(intent);
         }
     }
 }

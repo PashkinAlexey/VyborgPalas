@@ -15,50 +15,39 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by Алексей on 12.09.2016.
  */
 
-public class JSONParser {
+public abstract class JSONParser {
 
-    private JSONObject jobj = null;
+    public static JSONObject getJSONFromUrl(String url) throws IOException, JSONException {
+        JSONObject jobj = null;
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+        String str="";
 
-    public JSONParser() {
-    }
+        URL targetUrl = new URL(url);
 
-    public JSONObject getJSONFromUrl(String url) {
+        urlConnection = (HttpURLConnection) targetUrl.openConnection();
+        urlConnection.setRequestMethod("GET");
+        urlConnection.connect();
 
-        StringBuilder builder = new StringBuilder(); //класс построения строки
-        HttpClient client = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(url);
-        try {
-            HttpResponse response = client.execute(httpGet); //Класс ответа HTTP
-            StatusLine statusLine = response.getStatusLine(); //Статус ответа
-            int statusCode = statusLine.getStatusCode(); //полсения статуса ответа
-            if (statusCode == 200) { //Если все впорядке
-                HttpEntity entity = response.getEntity(); //Получаем сущность
-                InputStream content = entity.getContent(); //вытаскиваем из нее информацию
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    builder.append(line); //добавяем построчно полученный контент
-                }
-            } else {
-                Log.e("Ошибка", "Невозможно загрузить файл");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        InputStream inputStream = urlConnection.getInputStream();
+        StringBuffer buffer = new StringBuffer();
+
+        reader = new BufferedReader(new InputStreamReader(inputStream));
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            buffer.append(line);
         }
 
-
-        try {
-            String str=builder.toString();
-            jobj = new JSONObject(str.substring(19,str.length()-1));
-
-        } catch (JSONException e) {
-            Log.e("Ошибка", "Ошибка парсинга " + e.toString());
-        }
+        str = buffer.toString();
+        jobj = new JSONObject(str.substring(1,str.length()-1));
         return jobj;
     }
 }

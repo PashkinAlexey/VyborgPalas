@@ -23,7 +23,6 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     static final String TAG = "myLogs";
-    static final int PAGE_COUNT = 7;
 
     ViewPager pager;
     PagerAdapter pagerAdapter;
@@ -41,22 +40,22 @@ public class MainActivity extends AppCompatActivity {
         pagerTabStrip.setTextColor(ContextCompat.getColor(this, R.color.mainFont));
         pagerTabStrip.setTabIndicatorColor(ContextCompat.getColor(this, R.color.mainFont));
 
-        String url = "http://kinopasta.ru/export/widget.php?c=913&k=ed4d7ad8af&callback=jsonp1472499720148&_=1472499720151";
-        ActAsync tasky=new ActAsync(this);
-        tasky.execute(url);
-    }
-    public static JSONObject getjObj(){
-        return jObj;
-    }
-    public static HashMap<String,Drawable> getMovieImgs(){
-        return movieImgs;
+        String url = "http://kinopasta.ru/export/widget.php?c=913&k=ed4d7ad8af&_=1472499720151";
+        ActAsync jsonDl=new ActAsync(this);
+        jsonDl.execute(url);
     }
 
-    public static void setjObj(JSONObject newjObj){
+    public void setjObj(JSONObject newjObj){
         jObj=newjObj;
     }
-    public static void setMovieImgs(HashMap<String,Drawable> newMovieImgs){
+    public JSONObject getjObj(){
+        return jObj;
+    }
+    public void setMovieImgs(HashMap<String,Drawable> newMovieImgs){
         movieImgs=newMovieImgs;
+    }
+    public HashMap<String,Drawable> getMovieImgs(){
+        return movieImgs;
     }
 
     public void createFrags(){
