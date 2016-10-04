@@ -24,18 +24,20 @@ public class MainActivity extends AppCompatActivity {
 
     static final String TAG = "myLogs";
 
-    ViewPager pager;
-    PagerAdapter pagerAdapter;
-    private static JSONObject jObj;
-    private static HashMap<String,Drawable> movieImgs;
-    private static int dayCount=3;
+    private ViewPager pager;
+    private PagerAdapter pagerAdapter;
+    private int dayCount=3;
+    private static JSONObject jObj=null;
+    private static HashMap<String,Drawable> movieImgs=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagerTabStrip);
+
+        pager = (ViewPager) findViewById(R.id.pager);
+        PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagerTabStrip); //заголовок фрагмента
         pagerTabStrip.setDrawFullUnderline(false);
         pagerTabStrip.setTextColor(ContextCompat.getColor(this, R.color.mainFont));
         pagerTabStrip.setTabIndicatorColor(ContextCompat.getColor(this, R.color.mainFont));
@@ -45,28 +47,23 @@ public class MainActivity extends AppCompatActivity {
         jsonDl.execute(url);
     }
 
-    public void setjObj(JSONObject newjObj){
+    public static void setjObj(JSONObject newjObj){
         jObj=newjObj;
     }
-    public JSONObject getjObj(){
+    public static JSONObject getjObj(){
         return jObj;
     }
-    public void setMovieImgs(HashMap<String,Drawable> newMovieImgs){
+    public static void setMovieImgs(HashMap<String,Drawable> newMovieImgs){
         movieImgs=newMovieImgs;
     }
-    public HashMap<String,Drawable> getMovieImgs(){
+    public static HashMap<String,Drawable> getMovieImgs(){
         return movieImgs;
     }
 
-    public void createFrags(){
-        try {
+    public void createFrags() throws JSONException {
             dayCount=jObj.getJSONObject("seanses").length();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        pager = (ViewPager) findViewById(R.id.pager);
-        pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
-        pager.setAdapter(pagerAdapter);
+            pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
+            pager.setAdapter(pagerAdapter);
     }
 
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {

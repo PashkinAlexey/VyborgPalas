@@ -32,7 +32,7 @@ import java.util.Objects;
  * A simple {@link Fragment} subclass.
  * Created by Алексей on 12.09.2016.
  **/
-public class  PageFragment extends Fragment {
+public class PageFragment extends Fragment {
 
     static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
 
@@ -44,7 +44,7 @@ public class  PageFragment extends Fragment {
 
     View view;
 
-    PageFragment newInstance(int page) {
+    static PageFragment newInstance(int page) {
         PageFragment pageFragment = new PageFragment();
         Bundle arguments = new Bundle();
         arguments.putInt(ARGUMENT_PAGE_NUMBER, page);
@@ -114,7 +114,7 @@ public class  PageFragment extends Fragment {
                 else {                                                              //Если фильм не записан то добавить фильм и добавить новое время к нему
                     m = new HashMap<String, Object>();
                     m.put("movieName", movieName); //название фильма
-                    m.put("movieImage", mainActivity.getMovieImgs().get(movieId)); //изображение фильма
+                    m.put("movieImage", MainActivity.getMovieImgs().get(movieId)); //изображение фильма
                     movieData.add(m);
                     idList.add(movieId); //добавляем ID фильма в отдельный список, для получения нужного HTML
 
