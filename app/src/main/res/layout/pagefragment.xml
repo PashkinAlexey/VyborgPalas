@@ -9,11 +9,12 @@
     tools:context="net.pashkin.vyborgpalas.MainActivity">
     <ExpandableListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/lvMain"
-        android:divider="@drawable/divider"
+        android:dividerHeight="10dp"
+        android:divider="@null"
         android:childDivider="@color/mainFont"
         android:layout_centerVertical="false"
         android:layout_centerHorizontal="true"
-        android:dividerHeight="1dp" />
+        android:choiceMode="singleChoice"/>
 </RelativeLayout>

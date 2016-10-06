@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         pager = (ViewPager) findViewById(R.id.pager);
         PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagerTabStrip); //заголовок фрагмента
         pagerTabStrip.setDrawFullUnderline(false);
-        pagerTabStrip.setTextColor(ContextCompat.getColor(this, R.color.mainFont));
-        pagerTabStrip.setTabIndicatorColor(ContextCompat.getColor(this, R.color.mainFont));
+        //pagerTabStrip.setTextColor(ContextCompat.getColor(this, R.color.mainFont));
+        //pagerTabStrip.setTabIndicatorColor(ContextCompat.getColor(this, R.color.mainFont));
 
         String url = "http://kinopasta.ru/export/widget.php?c=913&k=ed4d7ad8af&_=1472499720151";
         ActAsync jsonDl=new ActAsync(this);
