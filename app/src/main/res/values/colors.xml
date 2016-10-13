@@ -2,8 +2,9 @@
 <resources>
     <color name="colorPrimary">#FF273542</color>
     <color name="colorPrimaryDark">#FF212121</color>
-    <color name="colorAccent">#429991</color>
+    <color name="colorAccent">#3fcac7</color>
     <color name="colorBlack">#000000</color>
-    <color name="mainFont">#f0e4e9</color>
+    <color name="mainFont">#000000</color>
+    <color name="mainbackground">#c1c9ce</color>
     <color name="holo_light_primary">#093755</color>
 </resources>
