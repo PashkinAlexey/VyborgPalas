@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="cards_sidesmargin">5dp</dimen>
     <dimen name="cards_topbotmargin">5dp</dimen>
+    <dimen name="cards_childleftmargin">20dp</dimen>
     <dimen name="cards_sidespadding">10dp</dimen>
     <dimen name="cards_topbotpadding">5dp</dimen>
 </resources>
