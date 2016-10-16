@@ -48,7 +48,15 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {                     //ОБЩИЙ метод формирования СПИСКА
         View v= super.getGroupView(groupPosition, isExpanded, convertView, parent);                                           //получение вьюхи СПИСКА после суперметод
+        if (isExpanded)
+        {
+            v.setBackgroundResource(R.drawable.expselector);
+        }
+        else{
+            v.setBackgroundResource(R.drawable.collselector);
+        }
         groupBindView(v, mGroupData.get(groupPosition), mMovieImgFrom, mMovieImgTo);                                                //вызов своего метода формирования СПИСКА
+
         return v;
     }
 
