@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="120dp">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/cards_topbotmargin"
-            android:layout_marginRight="@dimen/cards_sidesmargin"
-            android:layout_marginLeft="@dimen/cards_sidesmargin"
-            android:paddingTop="@dimen/cards_topbotpadding"
-            android:paddingBottom="@dimen/cards_topbotpadding"
-            android:paddingStart="@dimen/cards_sidespadding"
-            android:paddingEnd="@dimen/cards_sidespadding">
+            android:paddingTop="@dimen/parrent_top_padding"
+            android:paddingBottom="@dimen/parrent_bottom_padding"
+            android:paddingStart="@dimen/parrent_left_padding"
+            android:paddingEnd="@dimen/parrent_right_padding"
+            android:paddingLeft="@dimen/parrent_left_padding"
+            android:paddingRight="@dimen/parrent_right_padding"
+            android:layout_marginTop="@dimen/parrent_top_margin">
 
             <ImageView
                 android:layout_height="match_parent"
@@ -26,7 +24,8 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="10dp">
+                android:layout_marginStart="@dimen/parrent_text_left_margin"
+                android:layout_marginLeft="@dimen/parrent_text_left_margin">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -52,7 +51,5 @@
                     android:layout_marginBottom="5dp"
                     android:id="@+id/text2" />
             </LinearLayout>
-
         </LinearLayout>
-
 </LinearLayout>

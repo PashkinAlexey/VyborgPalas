@@ -1,18 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="net.pashkin.vyborgpalas.MainActivity">
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:paddingTop="@dimen/activity_vertical_margin" android:layout_width="fill_parent" android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <ExpandableListView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
         android:id="@+id/lvMain"
-        android:dividerHeight="0dp"
-        android:divider="@null"
-        android:listSelector="@android:color/transparent"
-        android:childDivider="@color/mainFont"
-        android:layout_centerVertical="false"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:paddingLeft="@dimen/lv_left_margin"
+        android:paddingTop="@dimen/lv_top_margin"
+        android:paddingRight="@dimen/lv_right_margin"
+        android:paddingBottom="@dimen/lv_bottom_margin"
         android:layout_centerHorizontal="true"
-        android:choiceMode="singleChoice"/>
+        android:layout_centerVertical="false"
+        android:listSelector="@android:color/transparent"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:choiceMode="singleChoice" />
 </RelativeLayout>

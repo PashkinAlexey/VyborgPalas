@@ -1,10 +1,25 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">10dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="cards_sidesmargin">5dp</dimen>
-    <dimen name="cards_topbotmargin">5dp</dimen>
-    <dimen name="cards_childleftmargin">20dp</dimen>
-    <dimen name="cards_sidespadding">10dp</dimen>
-    <dimen name="cards_topbotpadding">5dp</dimen>
+    <dimen name="activity_horizontal_margin">0dp</dimen>
+    <dimen name="activity_vertical_margin">5dp</dimen>
+
+    <dimen name="lv_top_margin">0dp</dimen>
+    <dimen name="lv_bottom_margin">0dp</dimen>
+    <dimen name="lv_left_margin">5dp</dimen>
+    <dimen name="lv_right_margin">5dp</dimen>
+
+    <dimen name="parrent_top_padding">5dp</dimen>
+    <dimen name="parrent_bottom_padding">5dp</dimen>
+    <dimen name="parrent_left_padding">5dp</dimen>
+    <dimen name="parrent_right_padding">5dp</dimen>
+    <dimen name="parrent_top_margin">8dp</dimen>
+    <dimen name="parrent_text_left_margin">10dp</dimen>
+
+    <dimen name="child_top_padding">0dp</dimen>
+    <dimen name="child_bottom_padding">0dp</dimen>
+    <dimen name="child_left_padding">0dp</dimen>
+    <dimen name="child_right_padding">0dp</dimen>
+    <dimen name="child_text_left_margin">10dp</dimen>
+    <dimen name="child_devider_left_margin">5dp</dimen>
+    <dimen name="child_devider_right_margin">5dp</dimen>
 </resources>

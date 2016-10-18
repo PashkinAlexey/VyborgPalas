@@ -43,12 +43,18 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) { //ОБЩИЙ метод формирования ПОДСПИСКА
         View v= super.getChildView(groupPosition, childPosition, isLastChild, convertView, parent);                           //получение вьюхи ПОДСПИСКА после суперметода
         childBindView(v, mChildData.get(groupPosition).get(childPosition), mImgFrom, mImgTo);                             //вызов своего метода формирования ПОДСПИСКА
+        if (isLastChild){                                                                                                   //установка фона ПОДСПИСКА
+            v.setBackgroundResource(R.drawable.child_last);
+        }
+        else {
+            v.setBackgroundResource(R.drawable.child);
+        }
         return  v;
     }
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {                     //ОБЩИЙ метод формирования СПИСКА
         View v= super.getGroupView(groupPosition, isExpanded, convertView, parent);                                           //получение вьюхи СПИСКА после суперметод
-        if (isExpanded)
+        if (isExpanded)                                                                                                         //установка селектора фона СПИСКА
         {
             v.setBackgroundResource(R.drawable.expselector);
         }
