@@ -24,8 +24,17 @@ import java.net.URL;
 
 public abstract class JSONParser {
 
+    public static JSONObject getSubJSONFromUrl(String url) throws IOException, JSONException {
+        String str=mainMethod(url);
+        JSONObject jobj = new JSONObject(str.substring(1,str.length()-1));
+        return jobj;
+    }
     public static JSONObject getJSONFromUrl(String url) throws IOException, JSONException {
-        JSONObject jobj = null;
+        String str=mainMethod(url);
+        JSONObject jobj = new JSONObject(str);
+        return jobj;
+    }
+    private static String mainMethod(String url) throws IOException {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String str="";
@@ -45,9 +54,8 @@ public abstract class JSONParser {
         while ((line = reader.readLine()) != null) {
             buffer.append(line);
         }
-
         str = buffer.toString();
-        jobj = new JSONObject(str.substring(1,str.length()-1));
-        return jobj;
+        return str;
     }
+
 }

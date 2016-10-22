@@ -27,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager pager;
     private PagerAdapter pagerAdapter;
     private int dayCount=3;
-    private static JSONObject jObj=null;
+    private static JSONObject schedule=null;
     private static HashMap<String,Drawable> movieImgs=null;
+    private static HashMap<String,JSONObject> movieData=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,26 +43,34 @@ public class MainActivity extends AppCompatActivity {
         //pagerTabStrip.setTextColor(ContextCompat.getColor(this, R.color.mainFont));
         //pagerTabStrip.setTabIndicatorColor(ContextCompat.getColor(this, R.color.mainFont));
 
-        String url = "http://kinopasta.ru/export/widget.php?c=913&k=ed4d7ad8af&_=1472499720151";
+        String scheduleUrl = "http://kinopasta.ru/export/widget.php?c=913&k=ed4d7ad8af";
+        String movieDataUrl = "http://api.kinopoisk.cf/getFilm?filmID=";
         ActAsync jsonDl=new ActAsync(this);
-        jsonDl.execute(url);
+        jsonDl.execute(scheduleUrl, movieDataUrl);
     }
 
-    public static void setjObj(JSONObject newjObj){
-        jObj=newjObj;
-    }
-    public static JSONObject getjObj(){
-        return jObj;
+    public static void setSchedule(JSONObject newSchedule){
+        schedule=newSchedule;
     }
     public static void setMovieImgs(HashMap<String,Drawable> newMovieImgs){
         movieImgs=newMovieImgs;
     }
+    public static void setMovieData(HashMap<String,JSONObject> newMovieData){
+        movieData=newMovieData;
+    }
+
+    public static JSONObject getSchedule(){
+        return schedule;
+    }
     public static HashMap<String,Drawable> getMovieImgs(){
         return movieImgs;
     }
+    public static HashMap<String,JSONObject> getMovieData(){
+        return movieData;
+    }
 
     public void createFrags() throws JSONException {
-            dayCount=jObj.getJSONObject("seanses").length();
+            dayCount=schedule.getJSONObject("seanses").length();
             pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
             pager.setAdapter(pagerAdapter);
     }
@@ -82,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                 DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
-                String inputDateStr=getjObj().getJSONObject("seanses").names().getString(position);
+                String inputDateStr=getSchedule().getJSONObject("seanses").names().getString(position);
                 Date date = inputFormat.parse(inputDateStr);
                 return  outputFormat.format(date);
             } catch (JSONException e) {

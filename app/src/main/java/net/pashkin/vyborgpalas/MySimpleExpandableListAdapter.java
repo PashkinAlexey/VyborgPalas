@@ -2,10 +2,15 @@ package net.pashkin.vyborgpalas;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
+import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
@@ -14,13 +19,17 @@ import java.util.Map;
  * Created by Алексей on 12.09.2016.
  */
 public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
+    static final String TAG = "myLogs";
+
     private List<? extends List<? extends Map<String, ?>>> mChildData; //ОБЪЯВЛЕНИЕ массива данных для ПОДСПИСКОВ
     private String[] mImgFrom;                                       //ОБЪЯВЛЕНИЕ массива данных с индексами ПОДСПИСКОВ
     private int[] mImgTo;                                            //ОБЪЯВЛЕНИЕ массива с вьюхами для ПОДСПИСКОВ
 
     private List<? extends Map<String, ?>> mGroupData;                 //ОБЪЯВЛЕНИЕ массива данных для СПИСКА
-    private String[] mMovieImgFrom;                                       //ОБЪЯВЛЕНИЕ массива данных с индексами СПИСКА
-    private int[] mMovieImgTo;                                            //ОБЪЯВЛЕНИЕ массива с вьюхами для СПИСКА
+    private String[] mMovieImgFrom;                                       //ОБЪЯВЛЕНИЕ массива данных с индексом изображений СПИСКА
+    private int[] mMovieImgTo;                                            //ОБЪЯВЛЕНИЕ массива с вьюхами изображений для СПИСКА
+    private String[] mGenreFrom;                                       //ОБЪЯВЛЕНИЕ массива данных с индексом жанра СПИСКА
+    private int[] mGenreTo;                                            //ОБЪЯВЛЕНИЕ массива с вьюхами жанра для СПИСКА
 
     public MySimpleExpandableListAdapter(Context context,
                                          List<? extends Map<String, ?>> groupData, int groupLayout,
@@ -28,7 +37,8 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
                                          List<? extends List<? extends Map<String, ?>>> childData, int childLayout,
                                          String[] childFrom, int[] childTo,
                                          String[] imgFrom, int[]imgTo,
-                                         String[] movieImgFrom, int[]movieImgTo) {
+                                         String[] movieImgFrom, int[]movieImgTo,
+                                         String[] genreFrom, int[]genreTo) {
         super(context, groupData, groupLayout, groupFrom, groupTo, childData, childLayout, childFrom, childTo); //Вызов конструктора суперкласса
 
         mChildData = childData;    //массив данных для ПОДСПИСКОВ
@@ -38,6 +48,8 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
         mGroupData = groupData;    //массив данных для СПИСКОВ
         mMovieImgFrom = movieImgFrom; //массив данных с индексами СПИСКОВ
         mMovieImgTo = movieImgTo;     //массив с вьюхами для СПИСКОВ
+        mGenreFrom = genreFrom; //массив данных с индексом жанра СПИСКА
+        mGenreTo = genreTo;     //массив с вьюхами жанра для СПИСКА
     }
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) { //ОБЩИЙ метод формирования ПОДСПИСКА
@@ -61,7 +73,7 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
         else{
             v.setBackgroundResource(R.drawable.collselector);
         }
-        groupBindView(v, mGroupData.get(groupPosition), mMovieImgFrom, mMovieImgTo);                                                //вызов своего метода формирования СПИСКА
+        groupBindView(v, mGroupData.get(groupPosition));                                                //вызов своего метода формирования СПИСКА
 
         return v;
     }
@@ -75,12 +87,21 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
             }
         }
     }
-    private void groupBindView(View view, Map<String, ?> data, String[] from, int[] to) { //СВОЙ метод формирования СПИСКА
-        int len = to.length;
+    private void groupBindView(View view, Map<String, ?> data) { //СВОЙ метод формирования СПИСКА
+        int len = mMovieImgTo.length;
         for (int i = 0; i < len; i++) {                                                   //проход по элементам СПИСКА
-            ImageView v = (ImageView)view.findViewById(to[i]);                            //установка каждому фильму соответствующего изображения
-            if (v != null) {
-                v.setImageDrawable((Drawable)data.get(from[i]));
+            ImageView imgView = (ImageView)view.findViewById(mMovieImgTo[i]);                            //установка каждому фильму соответствующего изображения
+            TextView genreView = (TextView)view.findViewById(mGenreTo[i]);                            //установка каждому фильму соответствующего изображения
+            if (imgView != null) {
+                imgView.setImageDrawable((Drawable)data.get(mMovieImgFrom[i]));
+            }
+            if (genreView != null) {
+                JSONObject movieData=(JSONObject)data.get(mGenreFrom[i]);
+                try {
+                    genreView.setText(movieData.getString("genre"));
+                } catch (JSONException e) {
+                    Log.d(TAG, "Нет графы \"Жанр\"");
+                }
             }
         }
     }

@@ -1,14 +1,11 @@
 package net.pashkin.vyborgpalas;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +17,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 
 /**
@@ -67,7 +60,7 @@ public class PageFragment extends Fragment {
         lvMain = (ExpandableListView) view.findViewById(R.id.lvMain);
 
         try {
-            listCreator(MainActivity.getjObj());
+            listCreator(MainActivity.getSchedule(),MainActivity.getMovieImgs(),MainActivity.getMovieData());
         } catch (JSONException e) {
             Toast toast = Toast.makeText(getContext(),"Ошибка загрузки данных", Toast.LENGTH_SHORT);
             toast.show();
@@ -75,7 +68,7 @@ public class PageFragment extends Fragment {
         return view;
     }
 
-    public void listCreator(JSONObject jobj) throws JSONException {
+    public void listCreator(JSONObject jobj, HashMap<String,Drawable> movieImgs, HashMap<String,JSONObject> movieData) throws JSONException {
         Drawable glass = ResourcesCompat.getDrawable(getResources(), R.drawable.glass, null);
         Drawable noGlass = ResourcesCompat.getDrawable(getResources(), R.drawable.noglass, null);
         JSONArray dates=jobj.getJSONObject("seanses").names();
@@ -85,7 +78,7 @@ public class PageFragment extends Fragment {
         final ArrayList<String> idList = new ArrayList<String>();
 
         // создаем коллекцию групп элементов
-        ArrayList<Map<String, Object>> movieData = new ArrayList<Map<String, Object>>();
+        ArrayList<Map<String, Object>> movieCollection = new ArrayList<Map<String, Object>>();
 
         // создаем коллекцию для коллекций элементов
         ArrayList<ArrayList<Map<String, Object>>> timeData = new ArrayList<ArrayList<Map<String, Object>>>();
@@ -99,24 +92,25 @@ public class PageFragment extends Fragment {
                 String movieId=jObjTemp.getString("f");
                 String movieName=jobj.getJSONObject("films").getJSONObject(movieId).getString("fr");
                 int movieIndex=-1;
-                for (int j=0; j<movieData.size(); j++) {                            //Проход по именам фильмов, и вычисление индекса если имя совпадает
-                    if (movieData.get(j).get("movieName").equals(movieName)) {
+                for (int j=0; j<movieCollection.size(); j++) {                            //Проход по именам фильмов и вычисление индекса если имя совпадает
+                    if (movieCollection.get(j).get("movieName").equals(movieName)) {
                         movieIndex = j;
                         break;
                     }
                 }
-                if (movieIndex>=0){                                                 //Если фильм уже записан то добавить новое время к нему по найденному индексу
+                if (movieIndex>=0){                                                 //Если фильм уже записан, то добавить новое время к нему по найденному индексу
                     t = new HashMap<String, Object>();
                     t.put("time", jObjTemp.getString("t")); // время
                     Drawable image=(jObjTemp.getInt("is3d")==0)?noGlass:glass;
                     t.put("img", image);
                     timeData.get(movieIndex).add(t);
                 }
-                else {                                                              //Если фильм не записан то добавить фильм и добавить новое время к нему
+                else {                                                              //Если фильм не записан, то добавить фильм и добавить новое время к нему
                     m = new HashMap<String, Object>();
                     m.put("movieName", movieName); //название фильма
-                    m.put("movieImage", MainActivity.getMovieImgs().get(movieId)); //изображение фильма
-                    movieData.add(m);
+                    m.put("movieImage", movieImgs.get(movieId)); //изображение фильма
+                    m.put("movieData", movieData.get(movieId)); //информация по фильму
+                    movieCollection.add(m);
                     idList.add(movieId); //добавляем ID фильма в отдельный список, для получения нужного HTML
 
                     t = new HashMap<String, Object>();
@@ -134,12 +128,12 @@ public class PageFragment extends Fragment {
         // список атрибутов групп для чтения
         String movieFrom[] = new String[] {"movieName"};
         // список ID view-элементов, в которые будет помещены атрибуты групп
-        int movieTo[] = new int[] {R.id.text1};
+        int movieTo[] = new int[] {R.id.description};
 
         // список атрибутов элементов для чтения
         String timeFrom[] = new String[] {"time"};
         // список ID view-элементов, в которые будет помещены атрибуты элементов
-        int timeTo[] = new int[] {R.id.text1};
+        int timeTo[] = new int[] {R.id.description};
 
         String imgFrom[] = new String[] {"img"};
         // список ID view-элементов, в которые будет помещены атрибуты элементов
@@ -149,14 +143,19 @@ public class PageFragment extends Fragment {
         // список ID view-элементов, в которые будет помещены атрибуты элементов
         int movieImgTo[] = new int[] {R.id.movieImage};
 
+        String genreFrom[] = new String[] {"movieData"};
+        // список ID view-элементов, в которые будет помещены атрибуты элементов
+        int genreTo[] = new int[] {R.id.genre};
+
         MySimpleExpandableListAdapter adapter = new MySimpleExpandableListAdapter(
                 getContext(),
-                movieData, R.layout.my_expandable_list_item,
+                movieCollection, R.layout.my_expandable_list_item,
                 movieFrom, movieTo,
                 timeData, R.layout.my_list_item,
                 timeFrom, timeTo,
                 imgFrom, imgTo,
-                movieImgFrom, movieImgTo
+                movieImgFrom, movieImgTo,
+                genreFrom, genreTo
                  );
 
         lvMain.setAdapter(adapter);
@@ -173,9 +172,10 @@ public class PageFragment extends Fragment {
 
         //  Нажатие на пункт списка
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    String url="http://kinopasta.ru/handlers/widget_film.php?c=913&k=ed4d7ad8af&film_id="+idList.get(groupPosition)+"&_=1473806277914";
-                    HtmlDl htmlDl=new HtmlDl();
-                    htmlDl.execute(url);
+                    String movieId=idList.get(groupPosition);
+                    Intent intent= new Intent(getContext(), FilmActivity.class);
+                    intent.putExtra("movieId", movieId);
+                    startActivity(intent);
                 }
 
         /*  //Нажатие на пункт подсписка
@@ -186,38 +186,5 @@ public class PageFragment extends Fragment {
                 return true;
             }
         });
-    }
-
-    class HtmlDl extends AsyncTask<String, Void, JSONObject> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected JSONObject doInBackground(String... url) {
-            try {
-                return JSONParser.getJSONFromUrl(url[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return new JSONObject();
-        }
-        @Override
-        protected void onPostExecute(final JSONObject result) {
-            Intent intent= new Intent(getContext(), FilmActivity.class);
-            String htmlData = null;
-            try {
-                htmlData = result.getString("html");
-                intent.putExtra("htmlData", htmlData);
-                startActivity(intent);
-            } catch (JSONException e) {
-                Toast toast = Toast.makeText(getContext(),"Невозможно получить данные о фильме", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        }
     }
 }

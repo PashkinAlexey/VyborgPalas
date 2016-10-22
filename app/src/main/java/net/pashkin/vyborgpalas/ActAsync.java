@@ -34,22 +34,35 @@ class ActAsync extends AsyncTask<String, Void, ArrayList<Object>> {
 
     @Override
     protected ArrayList<Object> doInBackground(String... url) {
-        JSONObject jObjDL = null;
-        HashMap<String, Drawable> movieImgs = null; //картино
+        JSONObject schedule = null;
+        HashMap<String, Drawable> movieImgs = new HashMap<String, Drawable>(); //картино
+        HashMap<String, JSONObject> movieData = new HashMap<String, JSONObject>(); //данные фильмов
         try {
-            jObjDL = JSONParser.getJSONFromUrl(url[0]);
-            try {
-                movieImgs = new HashMap<String, Drawable>();
-                JSONObject films = jObjDL.getJSONObject("films");
-                JSONArray movieInds = films.names();    //массив идентификаторов фильмов
-                for (int i = 0; i < movieInds.length(); i++) { //прохож по фильмам и загрузка картинок для каждого
+            schedule = JSONParser.getSubJSONFromUrl(url[0]);
+            JSONObject films = schedule.getJSONObject("films");
+            JSONArray movieInds = films.names();    //массив идентификаторов фильмов
+            for (int i = 0; i < movieInds.length(); i++) {  //проход по фильмам и загрузка картинок для каждого
+                try {
                     String filmId = movieInds.getString(i);
                     InputStream URLcontent = (InputStream) new URL("http://st.kinopoisk.ru/images/film/" + filmId + ".jpg").getContent();
                     Drawable image = Drawable.createFromStream(URLcontent, "your source link");
                     movieImgs.put(filmId, image);
+                } catch (IOException e) {
+                    Log.d(TAG, "Ошибка загрузки изображения для фильма. Нет связи");
+                } catch (JSONException e) {
+                    Log.d(TAG, "Ошибка данных при загрузке изображения фильма");
                 }
-            } catch (IOException e) {
-                Log.d(TAG, "Ошибка загрузки изображений для фильмов");
+            }
+            for (int i = 0; i < movieInds.length(); i++) {  //проход по фильмам и загрузка инфы для каждого
+                try {
+                    String filmId = movieInds.getString(i);
+                    JSONObject data = JSONParser.getJSONFromUrl(url[1]+filmId);
+                    movieData.put(filmId, data);
+                } catch (IOException e) {
+                    Log.d(TAG, "Ошибка загрузки данных для фильма. Нет связи");
+                } catch (JSONException e) {
+                    Log.d(TAG, "Ошибка данных фильма");
+                }
             }
         } catch (IOException e) {
             Log.d(TAG, "Ошибка загрузки данных");
@@ -57,24 +70,27 @@ class ActAsync extends AsyncTask<String, Void, ArrayList<Object>> {
             Log.d(TAG, "Ошибка распознавания Json");
         }
         ArrayList<Object> result = new ArrayList<Object>();
-        result.add(jObjDL);
+        result.add(schedule);
         result.add(movieImgs);
+        result.add(movieData);
         return result;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     protected void onPostExecute(ArrayList<Object> result) {
-        JSONObject jObj;
-        HashMap<String,Drawable> movieImgs;
-        jObj=(JSONObject)result.get(0);
-        movieImgs=(HashMap<String, Drawable>)result.get(1);
+        JSONObject schedule=(JSONObject)result.get(0);
+        HashMap<String,Drawable> movieImgs=(HashMap<String, Drawable>)result.get(1);
+        HashMap<String,JSONObject> movieData=(HashMap<String, JSONObject>)result.get(2);
 
-        if (jObj!=null) {
-            MainActivity.setjObj(jObj);
+        if (schedule!=null) {
+            MainActivity.setSchedule(schedule);
         }
-        if (movieImgs!=null) {
+        if (!movieImgs.isEmpty()) {
             MainActivity.setMovieImgs(movieImgs);
+        }
+        if (!movieData.isEmpty()) {
+            MainActivity.setMovieData(movieData);
         }
 
         try {
