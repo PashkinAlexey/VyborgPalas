@@ -68,7 +68,7 @@ public class PageFragment extends Fragment {
         return view;
     }
 
-    public void listCreator(JSONObject jobj, HashMap<String,Drawable> movieImgs, HashMap<String,JSONObject> movieData) throws JSONException {
+    public void listCreator(JSONObject jobj, HashMap<String,Drawable> movieImgs, final HashMap<String,JSONObject> movieData) throws JSONException {
         Drawable glass = ResourcesCompat.getDrawable(getResources(), R.drawable.glass, null);
         Drawable noGlass = ResourcesCompat.getDrawable(getResources(), R.drawable.noglass, null);
         JSONArray dates=jobj.getJSONObject("seanses").names();
@@ -78,7 +78,7 @@ public class PageFragment extends Fragment {
         final ArrayList<String> idList = new ArrayList<String>();
 
         // создаем коллекцию групп элементов
-        ArrayList<Map<String, Object>> movieCollection = new ArrayList<Map<String, Object>>();
+        final ArrayList<Map<String, Object>> movieCollection = new ArrayList<Map<String, Object>>();
 
         // создаем коллекцию для коллекций элементов
         ArrayList<ArrayList<Map<String, Object>>> timeData = new ArrayList<ArrayList<Map<String, Object>>>();
@@ -171,10 +171,11 @@ public class PageFragment extends Fragment {
 
 
         //  Нажатие на пункт списка
-                if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+                if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP ) {
                     String movieId=idList.get(groupPosition);
                     Intent intent= new Intent(getContext(), FilmActivity.class);
                     intent.putExtra("movieId", movieId);
+                    intent.putExtra("movieData", movieData.get(movieId).toString());
                     startActivity(intent);
                 }
 

@@ -21,7 +21,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FilmActivity extends AppCompatActivity {
+    static final String TAG = "myLogs";
     ImageView bigImageView;
+
+    /*String description="";
+    String description="";
+    String description="";
+    String description="";
+    String description="";*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,18 @@ public class FilmActivity extends AppCompatActivity {
         String movieId=intent.getStringExtra("movieId");
         BigImageDl bigImageDl=new BigImageDl();
         bigImageDl.execute(movieId);
+        getData(intent);
+    }
+
+    private void getData(Intent intent){
+        try {
+            JSONObject movieData=new JSONObject(intent.getStringExtra("movieData"));
+        } catch (JSONException e) {
+            Log.d(TAG, "Ошибка данных Интента");
+            Toast toast = Toast.makeText(this,"Ошибка данных", Toast.LENGTH_SHORT);
+            toast.show();
+            this.finish();
+        }
     }
 
     class BigImageDl extends AsyncTask<String, Void, Drawable> {
@@ -55,7 +74,7 @@ public class FilmActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(Drawable image) {
-            bigImageView.setImageDrawable(image);
+            if (image!=null)bigImageView.setImageDrawable(image);
         }
     }
 }

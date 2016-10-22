@@ -4,9 +4,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="net.pashkin.vyborgpalas.FilmActivity">
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="centerCrop"
         android:id="@+id/bigImage"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorHalfBlack">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="НАЗВАНИЕ ФИЛЬМА"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ОПИСАНИЕ"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="НАЗВАНИЕ ФИЛЬМА"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="НАЗВАНИЕ ФИЛЬМА"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="НАЗВАНИЕ ФИЛЬМА"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:gravity="center"/>
+    </LinearLayout>
 </RelativeLayout>

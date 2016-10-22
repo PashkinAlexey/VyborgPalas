@@ -101,6 +101,7 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
                     genreView.setText(movieData.getString("genre"));
                 } catch (JSONException e) {
                     Log.d(TAG, "Нет графы \"Жанр\"");
+                    genreView.setText("");
                 }
             }
         }
