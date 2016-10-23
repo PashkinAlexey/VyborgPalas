@@ -69,8 +69,6 @@ public class PageFragment extends Fragment {
     }
 
     public void listCreator(JSONObject jobj, HashMap<String,Drawable> movieImgs, final HashMap<String,JSONObject> movieData) throws JSONException {
-        Drawable glass = ResourcesCompat.getDrawable(getResources(), R.drawable.glass, null);
-        Drawable noGlass = ResourcesCompat.getDrawable(getResources(), R.drawable.noglass, null);
         JSONArray dates=jobj.getJSONObject("seanses").names();
         JSONArray seansesArray= jobj.getJSONObject("seanses").getJSONArray(dates.getString(pageNumber));
 
@@ -101,8 +99,8 @@ public class PageFragment extends Fragment {
                 if (movieIndex>=0){                                                 //Если фильм уже записан, то добавить новое время к нему по найденному индексу
                     t = new HashMap<String, Object>();
                     t.put("time", jObjTemp.getString("t")); // время
-                    Drawable image=(jObjTemp.getInt("is3d")==0)?noGlass:glass;
-                    t.put("img", image);
+                    boolean is3d=(jObjTemp.getInt("is3d")==0)?false:true;
+                    t.put("is3d", is3d);
                     timeData.get(movieIndex).add(t);
                 }
                 else {                                                              //Если фильм не записан, то добавить фильм и добавить новое время к нему
@@ -115,8 +113,8 @@ public class PageFragment extends Fragment {
 
                     t = new HashMap<String, Object>();
                     t.put("time", jObjTemp.getString("t")); // время
-                    Drawable image=(jObjTemp.getInt("is3d")==0)?noGlass:glass; // //изображение сеанса
-                    t.put("img", image); //изображение сеанса
+                    boolean is3d=(jObjTemp.getInt("is3d")==0)?false:true;    //В 3D сеанс или нет
+                    t.put("is3d", is3d); //изображение сеанса
                     timeDataItem = new ArrayList<Map<String, Object>>();
                     timeDataItem.add(t);
                     // добавляем в коллекцию коллекций
@@ -135,9 +133,9 @@ public class PageFragment extends Fragment {
         // список ID view-элементов, в которые будет помещены атрибуты элементов
         int timeTo[] = new int[] {R.id.description};
 
-        String imgFrom[] = new String[] {"img"};
+        String is3dFrom[] = new String[] {"is3d"};
         // список ID view-элементов, в которые будет помещены атрибуты элементов
-        int imgTo[] = new int[] {R.id.imageView1};
+        int is3dTo[] = new int[] {R.id.is3dFirst};
 
         String movieImgFrom[] = new String[] {"movieImage"};
         // список ID view-элементов, в которые будет помещены атрибуты элементов
@@ -153,7 +151,7 @@ public class PageFragment extends Fragment {
                 movieFrom, movieTo,
                 timeData, R.layout.my_list_item,
                 timeFrom, timeTo,
-                imgFrom, imgTo,
+                is3dFrom, is3dTo,
                 movieImgFrom, movieImgTo,
                 genreFrom, genreTo
                  );

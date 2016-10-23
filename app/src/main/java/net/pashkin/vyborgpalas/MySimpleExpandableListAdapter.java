@@ -22,8 +22,8 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
     static final String TAG = "myLogs";
 
     private List<? extends List<? extends Map<String, ?>>> mChildData; //ОБЪЯВЛЕНИЕ массива данных для ПОДСПИСКОВ
-    private String[] mImgFrom;                                       //ОБЪЯВЛЕНИЕ массива данных с индексами ПОДСПИСКОВ
-    private int[] mImgTo;                                            //ОБЪЯВЛЕНИЕ массива с вьюхами для ПОДСПИСКОВ
+    private String[] mis3dFrom;                                       //ОБЪЯВЛЕНИЕ массива данных с индексами ПОДСПИСКОВ
+    private int[] mis3dTo;                                            //ОБЪЯВЛЕНИЕ массива с вьюхами для ПОДСПИСКОВ
 
     private List<? extends Map<String, ?>> mGroupData;                 //ОБЪЯВЛЕНИЕ массива данных для СПИСКА
     private String[] mMovieImgFrom;                                       //ОБЪЯВЛЕНИЕ массива данных с индексом изображений СПИСКА
@@ -36,14 +36,14 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
                                          String[] groupFrom, int[] groupTo,
                                          List<? extends List<? extends Map<String, ?>>> childData, int childLayout,
                                          String[] childFrom, int[] childTo,
-                                         String[] imgFrom, int[]imgTo,
+                                         String[] is3dFrom, int[]is3dTo,
                                          String[] movieImgFrom, int[]movieImgTo,
                                          String[] genreFrom, int[]genreTo) {
         super(context, groupData, groupLayout, groupFrom, groupTo, childData, childLayout, childFrom, childTo); //Вызов конструктора суперкласса
 
         mChildData = childData;    //массив данных для ПОДСПИСКОВ
-        mImgFrom = imgFrom;      //массив данных с индексами ПОДСПИСКОВ
-        mImgTo = imgTo;          //массив с вьюхами для ПОДСПИСКОВ
+        mis3dFrom = is3dFrom;      //массив данных с индексами ПОДСПИСКОВ
+        mis3dTo = is3dTo;          //массив с вьюхами для ПОДСПИСКОВ
 
         mGroupData = groupData;    //массив данных для СПИСКОВ
         mMovieImgFrom = movieImgFrom; //массив данных с индексами СПИСКОВ
@@ -54,7 +54,7 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) { //ОБЩИЙ метод формирования ПОДСПИСКА
         View v= super.getChildView(groupPosition, childPosition, isLastChild, convertView, parent);                           //получение вьюхи ПОДСПИСКА после суперметода
-        childBindView(v, mChildData.get(groupPosition).get(childPosition), mImgFrom, mImgTo);                             //вызов своего метода формирования ПОДСПИСКА
+        childBindView(v, mChildData.get(groupPosition).get(childPosition), mis3dFrom, mis3dTo);                             //вызов своего метода формирования ПОДСПИСКА
         if (isLastChild){                                                                                                   //установка фона ПОДСПИСКА
             v.setBackgroundResource(R.drawable.child_last);
         }
@@ -79,12 +79,11 @@ public class MySimpleExpandableListAdapter extends SimpleExpandableListAdapter {
     }
 
     private void childBindView(View view, Map<String, ?> data, String[] from, int[] to) { //СВОЙ метод формирования ПОДСПИСКА
-        int len = to.length;
-        for (int i = 0; i < len; i++) {                                                   //проход по элементам ПОДСПИСКА
-            ImageView v = (ImageView)view.findViewById(to[i]);                            //установка каждому элементу соответствующего изображения 3d или no3d
-            if (v != null) {
-                v.setImageDrawable((Drawable)data.get(from[i]));
-            }
+        TextView is3dFirst = (TextView)view.findViewById(to[0]);                            //установка каждому элементу соответствующего изображения 3d или no3d
+        boolean is3d=(Boolean) data.get(from[0]);
+        if ((is3dFirst != null) && is3d) {
+            is3dFirst.setText("3");
+            is3dFirst.setTextColor(view.getResources().getColor(R.color.left_3d_color));
         }
     }
     private void groupBindView(View view, Map<String, ?> data) { //СВОЙ метод формирования СПИСКА

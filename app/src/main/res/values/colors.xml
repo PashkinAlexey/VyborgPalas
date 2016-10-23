@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#FF212121</color>
     <color name="colorAccent">#3fcac7</color>
     <color name="text_sec_color">#e7e7e7</color>
+    <color name="left_3d_color">#ff0000</color>
     <color name="colorBlack">#000000</color>
     <color name="colorHalfBlack">#B9000000</color>
     <color name="mainFont">#000000</color>
