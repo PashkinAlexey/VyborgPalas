@@ -3,8 +3,9 @@
     <color name="colorPrimary">#FF273542</color>
     <color name="colorPrimaryDark">#FF212121</color>
     <color name="colorAccent">#3fcac7</color>
+    <color name="text_sec_color">#e7e7e7</color>
     <color name="colorBlack">#000000</color>
-    <color name="colorHalfBlack">#70000000</color>
+    <color name="colorHalfBlack">#B9000000</color>
     <color name="mainFont">#000000</color>
     <color name="mainbackground">#c1c9ce</color>
     <color name="holo_light_primary">#093755</color>

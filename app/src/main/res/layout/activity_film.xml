@@ -9,45 +9,154 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:id="@+id/bigImage"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/colorHalfBlack">
-        <TextView
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="НАЗВАНИЕ ФИЛЬМА"
-            android:textColor="#FFFFFF"
-            android:layout_weight="1"
-            android:gravity="center"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ОПИСАНИЕ"
-            android:textColor="#FFFFFF"
-            android:layout_weight="1"
-            android:gravity="center"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="НАЗВАНИЕ ФИЛЬМА"
-            android:textColor="#FFFFFF"
-            android:layout_weight="1"
-            android:gravity="center"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="НАЗВАНИЕ ФИЛЬМА"
-            android:textColor="#FFFFFF"
-            android:layout_weight="1"
-            android:gravity="center"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="НАЗВАНИЕ ФИЛЬМА"
-            android:textColor="#FFFFFF"
-            android:layout_weight="1"
-            android:gravity="center"/>
-    </LinearLayout>
+            android:orientation="vertical"
+            android:background="@color/colorHalfBlack">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/movie_title_top"
+                android:paddingBottom="@dimen/movie_text_body_bottom"
+                android:text="Название фильма"
+                android:textSize="30sp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorAccent"
+                android:id="@+id/movieNameRu" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:text="Описание"
+                android:textSize="20sp"
+                android:textColor="@color/colorAccent"
+                android:id="@+id/descriptionTitle" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:paddingBottom="@dimen/movie_text_body_bottom"
+                android:text="описание описание описание описаниеописание описание описание описание описание описание описани еописание о п и с аниеопис аниеммоп исаниео писание мописание описание описание описание"
+                android:textColor="@color/text_sec_color"
+                android:id="@+id/description" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:text="Страна"
+                android:textSize="20sp"
+                android:textColor="@color/colorAccent"
+                android:id="@+id/countryTitle" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:paddingBottom="@dimen/movie_text_body_bottom"
+                android:text="УСА"
+                android:textColor="@color/text_sec_color"
+                android:id="@+id/country" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:text="Жанр фильма"
+                android:textSize="20sp"
+                android:textColor="@color/colorAccent"
+                android:id="@+id/genreTitle" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:paddingBottom="@dimen/movie_text_body_bottom"
+                android:text="Драма"
+                android:textColor="@color/text_sec_color"
+                android:id="@+id/genre" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:text="Длина"
+                android:textSize="20sp"
+                android:textColor="@color/colorAccent"
+                android:id="@+id/durationTitle" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:paddingBottom="@dimen/movie_text_body_bottom"
+                android:text="2:56"
+                android:textColor="@color/text_sec_color"
+                android:id="@+id/duration" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:text="Режиссер"
+                android:textSize="20sp"
+                android:textColor="@color/colorAccent"
+                android:id="@+id/directorTitle" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:paddingBottom="@dimen/movie_text_body_bottom"
+                android:text="Тарантино"
+                android:textColor="@color/text_sec_color"
+                android:id="@+id/director" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:text="В ролях"
+                android:textSize="20sp"
+                android:textColor="@color/colorAccent"
+                android:id="@+id/castTitle" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:paddingBottom="@dimen/movie_text_body_bottom"
+                android:text="Много всяких разных парней"
+                android:textColor="@color/text_sec_color"
+                android:id="@+id/cast" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:text="Продюссер"
+                android:textSize="20sp"
+                android:textColor="@color/colorAccent"
+                android:id="@+id/producerTitle" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/movie_padding_left"
+                android:paddingLeft="@dimen/movie_padding_left"
+                android:paddingBottom="@dimen/movie_text_body_bottom"
+                android:text="Крутой поц"
+                android:textColor="@color/text_sec_color"
+                android:id="@+id/producer" />
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

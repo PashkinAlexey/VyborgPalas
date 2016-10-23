@@ -22,14 +22,19 @@
         android:paddingLeft="@dimen/child_left_padding"
         android:paddingRight="@dimen/child_right_padding">
 
-        <ImageView android:id="@+id/imageView1"
+        <TextView
+            android:id="@+id/glasses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="35dp"
             android:minHeight="47dp"
             android:paddingStart="10dp"
             android:paddingLeft="10dp"
-            android:scaleType="fitCenter" />
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:textColor="@color/colorAccent"
+            android:text="2D"
+            />
 
         <TextView
             android:layout_width="wrap_content"

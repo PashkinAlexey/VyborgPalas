@@ -22,4 +22,8 @@
     <dimen name="child_text_left_margin">10dp</dimen>
     <dimen name="child_devider_left_margin">5dp</dimen>
     <dimen name="child_devider_right_margin">5dp</dimen>
+
+    <dimen name="movie_padding_left">10dp</dimen>
+    <dimen name="movie_title_top">8dp</dimen>
+    <dimen name="movie_text_body_bottom">10dp</dimen>
 </resources>

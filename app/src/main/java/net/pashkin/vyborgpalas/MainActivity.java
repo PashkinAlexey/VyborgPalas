@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             try {
                 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-                DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
+                DateFormat outputFormat = new SimpleDateFormat("EEE, dd MMM yyyy");
                 String inputDateStr=getSchedule().getJSONObject("seanses").names().getString(position);
                 Date date = inputFormat.parse(inputDateStr);
                 return  outputFormat.format(date);
